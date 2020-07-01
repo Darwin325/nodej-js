@@ -1,5 +1,6 @@
 const express = require('express')
 const response = require('../../network/response')
+const controller = require('./controller')
 
 const router = express.Router()
 
@@ -7,11 +8,15 @@ router.get('/', (req, res) => {
    response.success(req, res, 'Lista de mensajes')
 })
 
-router.post('/', (req, res) => {
-   if (req.query.error == 'ok') {
-      response.error(req, res, 'Page not found', 404, 'Esto es un error simulado')
-   } else {
-      response.success(req, res, 'Creado correctamente', 201)
+router.post('/', async (req, res) => {
+   const { user, message } = req.body
+   try {
+      const resolve = await controller.addMessage(user, message)
+      console.log('resolve', resolve)
+      response.success(req, res, resolve, 201)
+   } catch (e) {
+      console.error(e)
+      response.error(req, res, e, 400, 'Datos incorrectos, no hay usuario o contraseña')
    }
 })
 
