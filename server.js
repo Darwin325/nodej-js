@@ -21,5 +21,8 @@ router.post('/', (req, res) => {
    }
 })
 
+
+app.use('/app', express.static('public'))
+
 app.listen(3000)
 console.log('La aplicación está escuchado en: http://localhost:3000')
