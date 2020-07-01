@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
    if (req.query.error == 'ok') {
-      response.error(req, res, 'Page not found', 404)
+      response.error(req, res, 'Page not found', 404, 'Esto es un error simulado')
    } else {
       response.success(req, res, 'Creado correctamente', 201)
    }
