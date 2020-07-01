@@ -1,4 +1,6 @@
 const express = require('express')
+const response = require('./network/response')
+
 const router = express.Router()
 
 
@@ -8,17 +10,15 @@ app.use(express.urlencoded()).use(express.json())
 app.use(router)
 
 router.get('/', (req, res) => {
-   console.log(req.headers)
-   res.header({
-      'custom-headers': 'Nuestro valor personalizado'
-   })
-   res.send('Lista de mesajes')
+   response.success(req, res, 'Lista de mensajes')
 })
 
-router.post ('/', (req, res) => {
-   console.log(req.body)
-   console.log(req.query)
-   res.send('Mensaje añadido')
+router.post('/', (req, res) => {
+   if (req.query.error == 'ok') {
+      response.error(req, res, 'Page not found', 404)
+   } else {
+      response.success(req, res, 'Creado correctamente', 201)
+   }
 })
 
 app.listen(3000)
