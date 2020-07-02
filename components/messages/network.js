@@ -4,15 +4,20 @@ const controller = require('./controller')
 
 const router = express.Router()
 
-router.get('/', (req, res) => {
-   response.success(req, res, 'Lista de mensajes')
+router.get('/', async (req, res) => {
+   try {
+      const messages = await controller.getMessages()
+      response.success(req, res, messages)
+   } catch (e) {
+      response.error(req, res, e, 401, 'No se pudo consultar')
+   }
 })
 
 router.post('/', async (req, res) => {
    const { user, message } = req.body
    try {
       const resolve = await controller.addMessage(user, message)
-      console.log('resolve', resolve)
+      console.log(resolve)
       response.success(req, res, resolve, 201)
    } catch (e) {
       console.error(e)
